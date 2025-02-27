@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 
@@ -12,10 +12,6 @@ type MenuItem = {
   description: string;
 };
 
-type CartItem = MenuItem & {
-  quantity?: number;
-};
-
 const HomePg = () => {
   const { cart, addToCart } = useCart();
   const [menu, setMenu] = useState<MenuItem[]>([]);
@@ -24,20 +20,28 @@ const HomePg = () => {
   const fetchMenu = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/api/menus/");
-      const data = await response.json();
-      console.log("Fetched menu data:", data);  
+      const data: { id: number; image?: string; name: string; price: number; description?: string }[] = 
+        await response.json();
+      
+      console.log("Fetched menu data:", data);
+      
       setMenu(
-        data.map((item: any) => ({
-          ...item,
-          src: item.image || "",  
+        data.map((item) => ({
+          id: item.id,
+          src: item.image ?? "",  
+          name: item.name,
+          price: item.price,
+          description: item.description ?? "No description available",
         }))
       );
+  
       setIsMenuOpen(true);
     } catch (error) {
       console.error("Error fetching menu:", error);
       setIsMenuOpen(true);
     }
   };
+  
   
 
 

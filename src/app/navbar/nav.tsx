@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 
 const Navbar = () => {
-  const [cartCount, setCartCount] = useState(0); 
+  const [cartCount] = useState(0); 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
